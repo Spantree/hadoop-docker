@@ -7,6 +7,10 @@ Or simply just use [docker](https://www.docker.io/).
 docker run -i -t sequenceiq/hadoop-docker /etc/bootstrap.sh -bash
 ```
 
+## Hive
+
+This image is a fork of sequenceiq/hadoop-docker with the addition of hive.
+
 ## Testing
 
 You can run one of the stock examples:

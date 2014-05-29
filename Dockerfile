@@ -37,6 +37,11 @@ RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/usr/local/had
 RUN mkdir $HADOOP_PREFIX/input
 RUN cp $HADOOP_PREFIX/etc/hadoop/*.xml $HADOOP_PREFIX/input
 
+# hive
+RUN curl -s http://mirror.tcpdiag.net/apache/hive/stable/apache-hive-0.13.0-bin.tar.gz | tar -xz -C /usr/local/ && \
+    cd /usr/local && ln -s ./apache-hive-0.13.0-bin hive
+ENV HIVE_HOME /usr/local/hive
+
 # pseudo distributed
 ADD core-site.xml $HADOOP_PREFIX/etc/hadoop/core-site.xml
 ADD hdfs-site.xml $HADOOP_PREFIX/etc/hadoop/hdfs-site.xml
