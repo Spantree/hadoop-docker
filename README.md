@@ -4,12 +4,29 @@ You want to try out hadoop 2.3? Go to the zoo and [shave a yak](http://sethgodin
 Or simply just use [docker](https://www.docker.io/).
 
 ```
-docker run -i -t sequenceiq/hadoop-docker /etc/bootstrap.sh -bash
+docker run -it --rm labianchin/hadoop /etc/bootstrap.sh -bash
 ```
 
 ## Hive
 
 This image is a fork of sequenceiq/hadoop-docker with the addition of hive.
+
+## Play with hive
+
+```
+$ export PATH=$HADOOP_PREFIX/bin:$HIVE_HOME/bin:$PATH
+$ cat > /tmp/pokes_foo.csv << EOL
+foo,bar
+1,"raa"
+2,"quee"
+3,"other val"
+EOL
+$ hive
+hive> CREATE TABLE pokes (foo INT, bar STRING) row format delimited fields terminated by ',';
+hive> LOAD DATA LOCAL INPATH '/tmp/pokes_foo.csv' OVERWRITE INTO TABLE pokes;
+hive> SELECT * FROM pokes;
+
+```
 
 ## Testing
 
@@ -17,10 +34,10 @@ You can run one of the stock examples:
 
 ```
 cd $HADOOP_PREFIX
-# run the mapreduce
+ # run the mapreduce
 bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.3.0.jar grep input output 'dfs[a-z.]+'
 
-# check the output
+ # check the output
 bin/hdfs dfs -cat output/*
 ```
 
