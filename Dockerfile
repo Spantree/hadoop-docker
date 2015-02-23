@@ -26,7 +26,7 @@ ENV JAVA_HOME /usr/java/default
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # hadoop
-RUN curl -s http://www.eu.apache.org/dist/hadoop/common/hadoop-2.3.0/hadoop-2.3.0.tar.gz | tar -xz -C /usr/local/
+RUN curl -s https://archive.apache.org/dist/hadoop/common/hadoop-2.3.0/hadoop-2.3.0.tar.gz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s ./hadoop-2.3.0 hadoop
 
 ENV HADOOP_PREFIX /usr/local/hadoop
@@ -38,7 +38,7 @@ RUN mkdir $HADOOP_PREFIX/input
 RUN cp $HADOOP_PREFIX/etc/hadoop/*.xml $HADOOP_PREFIX/input
 
 # hive
-RUN curl -s http://mirror.tcpdiag.net/apache/hive/stable/apache-hive-0.13.0-bin.tar.gz | tar -xz -C /usr/local/ && \
+RUN curl -s https://archive.apache.org/dist/hive/hive-0.13.0/apache-hive-0.13.0-bin.tar.gz | tar -xz -C /usr/local/ && \
     cd /usr/local && ln -s ./apache-hive-0.13.0-bin hive
 ENV HIVE_HOME /usr/local/hive
 
@@ -84,6 +84,10 @@ RUN echo "UsePAM no" >> /etc/ssh/sshd_config
 
 RUN service sshd start && $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && $HADOOP_PREFIX/sbin/start-dfs.sh && $HADOOP_PREFIX/bin/hdfs dfs -mkdir -p /user/root
 RUN service sshd start && $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh && $HADOOP_PREFIX/sbin/start-dfs.sh && $HADOOP_PREFIX/bin/hdfs dfs -put $HADOOP_PREFIX/etc/hadoop/ input
+
+# Elasticsearch Hadoop setup.
+RUN mkdir /usr/local/elasticsearch-hadoop
+ADD dist/*  /usr/local/elasticsearch-hadoop/
 
 CMD ["/etc/bootstrap.sh", "-d"]
 
